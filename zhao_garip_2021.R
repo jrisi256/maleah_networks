@@ -1,4 +1,4 @@
-library(matrixStats) 
+library(matrixStats)
 library(parallel)
 library(plot3D)
 library(here)
@@ -246,26 +246,29 @@ save_networks <- function(D = 10,
 }
 
 
-
+# JOE EDIT: I'm changing group size (G) from 50 to 10.
+# JOE EDIT: I'm changing time (time) from 50 to 2.
+# JOE EDIT: I'm chaning numsim (numsim) from 100 to 2.
 vary_params <- function(beta_input){
     params_alpha = -2:6
     params_alpha = params_alpha/2
     list_cons <- vector("list", length(params_alpha))
     for(i in 1:length(params_alpha)){
-        list_cons[[i]] = list(H = 16, G = 50, Z = 10, numsim = 100, time = 50, beta = beta_input)
+        list_cons[[i]] = list(H = 16, G = 10, Z = 10, numsim = 2, time = 2, beta = beta_input)
         list_cons[[i]]$alpha = params_alpha[i]
     }
     networks <- mclapply(list_cons, function(x) 
         save_networks(H = x$H, G = x$G, Z = x$Z, numsim = x$numsim,
-                      time = x$time, alpha = x$alpha, beta = x$beta), mc.cores = 9)
+                      time = x$time, alpha = x$alpha, beta = x$beta),
+        mc.cores = detectCores())
     return(networks)
 }
-
 
 params_beta = -2:6
 params_beta = params_beta/2
 
-networksoverall = mclapply(params_beta, function(x) vary_params(beta_input = x), mc.cores = 9)
+networksoverall = mclapply(params_beta, function(x) vary_params(beta_input = x),
+                           mc.cores = detectCores())
 networksoverall3 = networksoverall
 
 # first number (i) is consolidation
@@ -273,16 +276,18 @@ inequalitymatrix = matrix(0, 9, 9)
 diffusionmatrix = matrix(0, 9, 9)
 diffusionmatrix_v = matrix(0, 9, 9)
 inequalitymatrix_v = matrix(0, 9, 9)
+
 for(i in 1:9){
     for(j in 1:9){
         print("i")
         print(i)
         print("j")
         print(j)
-        diffusionmatrix[i,j] = networksoverall3[[i]][[j]]$obs[[50]]
-        diffusionmatrix_v[i,j] = networksoverall3[[i]][[j]]$obsv[[50]]
-        inequalitymatrix[i,j] = networksoverall3[[i]][[j]]$obs_lor[[50]]
-        inequalitymatrix_v[i,j] = (networksoverall3[[i]][[j]]$obs_lorv[[50]])
+        # JOE EDIT: HAd to change the 50 to 2
+        diffusionmatrix[i,j] = networksoverall3[[i]][[j]]$obs[2]
+        diffusionmatrix_v[i,j] = networksoverall3[[i]][[j]]$obsv[[2]]
+        inequalitymatrix[i,j] = networksoverall3[[i]][[j]]$obs_lor[[2]]
+        inequalitymatrix_v[i,j] = (networksoverall3[[i]][[j]]$obs_lorv[[2]])
         #inequalitymatrix[i,j] = (networksoverall3[[i]][[j]]$obsh[[50]])/(0.000001 + networksoverall3[[i]][[j]]$obso[[50]])  
     }
 }
