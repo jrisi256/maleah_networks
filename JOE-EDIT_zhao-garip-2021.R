@@ -221,28 +221,29 @@ save_networks <- function(D = 10,
     #ties = x$ties
     #positions = x$socpos
     #status = positions[, 1]
-    obsdiffusion = matrix(0, numsim, time)
-    obsdiffusion_h = matrix(0, numsim, time)
-    obsdiffusion_a = matrix(0, numsim, time)
-    obsdiffusion_l = matrix(0, numsim, time)
-    obsdiffusion_lor = matrix(0, numsim, time)
+    # obsdiffusion = matrix(0, numsim, time)
+    # obsdiffusion_h = matrix(0, numsim, time)
+    # obsdiffusion_a = matrix(0, numsim, time)
+    # obsdiffusion_l = matrix(0, numsim, time)
+    # obsdiffusion_lor = matrix(0, numsim, time)
     for(i in 1:numsim){
         # PUT IT HERE TO MAKE IT DO NUMSIM NETWORKS PER SET OF PARAMETERS
         x = makenetwork(H, G, D, Z, alpha, beta)
         ties = x$ties
         positions = x$socpos
         status = positions[, 1]
-        update = simulate.adoption.ineq(ties, time, H, status)    
-        obsdiffusion[i,] = update$rate_all
-        obsdiffusion_h[i,] = update$rate_high
-        obsdiffusion_a[i,] = update$rate_avg
-        obsdiffusion_l[i,] = update$rate_low
-        obsdiffusion_lor[i,] = log(update$rate_high/update$rate_low)
+        # update = simulate.adoption.ineq(ties, time, H, status)
+        # obsdiffusion[i,] = update$rate_all
+        # obsdiffusion_h[i,] = update$rate_high
+        # obsdiffusion_a[i,] = update$rate_avg
+        # obsdiffusion_l[i,] = update$rate_low
+        # obsdiffusion_lor[i,] = log(update$rate_high/update$rate_low)
     }
-    print(obsdiffusion)
-    print(obsdiffusion_lor)
-    return(list(obs = colMeans(obsdiffusion), obsv = colSds(obsdiffusion), 
-                obs_lor = colMeans(obsdiffusion_lor), obs_lorv = colSds(obsdiffusion_lor)))
+    # print(obsdiffusion)
+    # print(obsdiffusion_lor)
+    # return(list(obs = colMeans(obsdiffusion), obsv = colSds(obsdiffusion), 
+    #             obs_lor = colMeans(obsdiffusion_lor), obs_lorv = colSds(obsdiffusion_lor)))
+  return(x)
 }
 
 
