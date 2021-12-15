@@ -1,3 +1,4 @@
+library(purrr)
 set.seed(420)
 
 # nr_a, number of rows, number of people in the simulation
@@ -22,14 +23,23 @@ InitializeIndividuals <- function(nr_a, nr_quals, nr_pc, nr_foci_membership) {
     return(matrix1)
 }
 
-# nr_a, number of agents, number of rows
-# nr_f, number of foci, number of columns
-# s, number of slots available in each foci
-CreateFoci <- function(nr_a, nr_f, s) {
-    matrix1 <- matrix(0, nrow = nr_a, ncol = nr_f)
-    available_slots <- rep(1:nr_f, s)
-    return(list(foci_matrix = matrix1, open_foci = available_slots))
+# nr_foci, number of foci, number of rows
+# nr_slots, number of chairs or slots in the focus, number of columns
+InitializeFoci <- function(nr_foci, nr_slots) {
+    matrix1 <- matrix(1, nrow = nr_foci, ncol = nr_slots)
 }
 
-person_matrix <- InitializeIndividuals(100, 15, 10, 5)
-a <- CreateFoci(1000, 10, 100)
+JoinFocus <- function(row_indices,
+                      col_indices,
+                      individual_matrix,
+                      focus_matrix) {
+    apply(focus_matrix, 1, function(x) {sum(x)})
+}
+
+person_matrix <- InitializeIndividuals(1000, 15, 10, 5)
+foci_matrix <- InitializeFoci(50, 10)
+
+temp_matrix <- JoinFocus(nrow(person_matrix),
+                         rep(16, nrow(person_matrix)),
+                         person_matrix,
+                         foci_matrix)
