@@ -3,7 +3,7 @@ set.seed(420)
 # nr_a, number of rows, number of people in the simulation
 # nr_quals, number of columns, number of features of a person
 # nr_pc, number of personal characteristics
-CreateIndividuals <- function(nr_a, nr_quals, nr_pc) {
+InitializeIndividuals <- function(nr_a, nr_quals, nr_pc) {
     matrix1 <- matrix(0, nrow = nr_a, ncol = nr_quals)
     
     # number of personal characteristics, uniform
@@ -29,5 +29,5 @@ CreateFoci <- function(nr_a, nr_f, s) {
     return(list(foci_matrix = matrix1, open_foci = available_slots))
 }
 
-person_matrix <- CreateIndividuals(100, 15, 10)
+person_matrix <- InitializeIndividuals(100, 15, 10)
 a <- CreateFoci(1000, 10, 100)
